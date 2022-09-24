@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+  focus-ssr:
+    build: ./
+    container_name: focus_ssr
+    ports:
+      - "7000:7000"
+  my-nginx:
+    image: nginx
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_HOST=80
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=mipass
+      - POSTGRES_BD=ssrdb
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+  redis:
+    image: redis
+    restart: always
+volumes:
+    postgres_db:
