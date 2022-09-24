@@ -1,0 +1,27 @@
+name: Focus-ssr Docker Image 
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: Publish to Docker Hub
+      uses: docker/build-push-action@v3
+      with:
+        username: ${{ DOCKER_USER }}
+        password: ${{ DOCKER_PASSWORD }}
+        repository: vegadevh/focus-ssr
+        tags: latest, ${{ github.run_number }}
+      
+      
